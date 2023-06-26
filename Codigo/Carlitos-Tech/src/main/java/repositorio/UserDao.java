@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package repositorio;
 
 import Core.Rol;
@@ -16,16 +11,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import repositorio.Jdbc.SqlConnection;
 
-/**
- *
- * @author losmelli
- */
 public class UserDao implements Dao<Usuario> {
 
     @Override
     public void add(Usuario usuario) {
         Connection con = SqlConnection.getConnection();
-        PreparedStatement ps;
+        PreparedStatement ps = null;
         try {
             ps = con.prepareStatement("insert into usuario (nombre,apellido,contraseña,rol) VALUES(?,?,?,?)");
 
@@ -37,15 +28,38 @@ public class UserDao implements Dao<Usuario> {
 
         } catch (SQLException ex) {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally{
+            try{
+                if(ps != null){
+                    ps.close();
+                }
+            }catch(SQLException e){}
+            
         }
 
     }
 
     @Override
-    public void delete(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(int id) {
+        Connection con = SqlConnection.getConnection();
+        PreparedStatement ps = null;
+        try {
+            String query = "DELETE FROM Usuario WHERE id=?";
+            ps = con.prepareStatement(query);
+            int idEliminar = id;
+            ps.setInt(1, idEliminar);
+            ps.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try{
+                if(ps != null){
+                    ps.close();
+                }
+            }catch(SQLException e){}
+        }
     }
-
+    
     @Override
     public Usuario get(String nombre) throws SQLException {
         String nom = "", apellido = "", contraseña = "";
@@ -72,7 +86,7 @@ public class UserDao implements Dao<Usuario> {
     }
 
     @Override
-    public List<Usuario> getList() throws SQLException {
+    public List<Usuario> getList() throws SQLException { // posible futura implementacion
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

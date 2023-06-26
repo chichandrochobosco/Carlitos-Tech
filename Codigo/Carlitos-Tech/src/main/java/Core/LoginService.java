@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import repositorio.Dao;
-import repositorio.UserDao;
 
 /**
  *
@@ -36,9 +35,5 @@ public class LoginService {
         }
         return null;
     }
-    
-    
-    
-    
-    
 }
+

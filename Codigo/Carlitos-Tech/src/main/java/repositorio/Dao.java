@@ -7,27 +7,22 @@ package repositorio;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 /**
  *
  * @author losmelli
+ * @param <T>
  */
 public interface Dao <T> {
     
-     public void add(T emp)
-        throws SQLException;
+     public void add(T emp) throws SQLException;
      
-    public void delete(int id)
-        throws SQLException;
+    public void delete(int id) throws SQLException;
     
-    public T get(String t)
-        throws SQLException;
+    public T get(String t) throws SQLException;
     
-    public List<T> getList()
-        throws SQLException;
+    public List<T> getList() throws SQLException;
     
-    public void update(T t)
-        throws SQLException;
+    public void update(T t) throws SQLException;
     
 }

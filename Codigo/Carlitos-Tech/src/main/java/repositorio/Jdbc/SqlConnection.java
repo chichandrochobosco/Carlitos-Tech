@@ -15,12 +15,12 @@ import java.sql.SQLException;
  * @author losmelli
  */
 public class SqlConnection {
-        private static Connection con = null;
+    private static Connection con = null;
 
 
-  static
+    static
     {
-        String url = "jdbc:mysql://localhost:3306/kiosco?serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3306/carlitostech?serverTimezone=UTC";
         String user = "root";
         String pass = "12345";
         try {
