@@ -1,5 +1,5 @@
 
-package carlitos.tech;
+package Core;
 
 /**
  *
