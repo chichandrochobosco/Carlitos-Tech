@@ -6,13 +6,13 @@ package Core;
  * @author Licha
  */
 public class Producto {
-    private String id;
+    private int id;
     private String nombre;
     private float precio;
     private String marca;
     private int cantidad;
 
-    public Producto(String id, String nombre, float precio, String marca, int cantidad) {
+    public Producto(int id, String nombre, float precio, String marca, int cantidad) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
@@ -20,7 +20,7 @@ public class Producto {
         this.cantidad = cantidad;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

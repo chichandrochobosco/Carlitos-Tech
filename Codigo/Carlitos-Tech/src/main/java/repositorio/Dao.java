@@ -4,13 +4,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
- * @author losmelli
  * @param <T>
  */
 public interface Dao <T> {
     
-     public void add(T emp) throws SQLException;
+    public void add(T emp) throws SQLException;
      
     public void delete(int id) throws SQLException;
     

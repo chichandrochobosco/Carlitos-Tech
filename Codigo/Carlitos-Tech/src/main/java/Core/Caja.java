@@ -1,46 +1,42 @@
-
 package Core;
 
+import java.time.LocalDateTime;
 import java.time.Period;
 
-/**
- *
- * @author Licha
- */
 public class Caja {
-    private double valorInicial;
-    private double valorFinal;
-    private Period fechaApertura;
-    private Period fechaCierre;
+    private float valorInicial;
+    private float valorFinal;
+    private LocalDateTime fechaApertura;
+    private LocalDateTime fechaCierre;
 
-    public Caja(float valorInicial, float valorFinal, Period fechaApertura, Period fechaCierre) {
+    public Caja(float valorInicial, float valorFinal, LocalDateTime fechaApertura, LocalDateTime fechaCierre) {
         this.valorInicial = valorInicial;
         this.valorFinal = valorFinal;
         this.fechaApertura = fechaApertura;
         this.fechaCierre = fechaCierre;
     }
 
-    public double getValorInicial() {
+    public float getValorInicial() {
         return valorInicial;
     }
 
-    public double getValorFinal() {
+    public float getValorFinal() {
         return valorFinal;
     }
 
-    public Period getFechaApertura() {
+    public LocalDateTime getFechaApertura() {
         return fechaApertura;
     }
 
-    public Period getFechaCierre() {
+    public LocalDateTime getFechaCierre() {
         return fechaCierre;
     }
     
-    public double abrirCaja(double valorInicial){
+    public float abrirCaja(float valorInicial){
         return valorInicial;
     }
     
-    public double cerrarCaja(double valorFinal){
+    public float cerrarCaja(float valorFinal){
         //se deberia pasar las ganacias del dia asi se suma al valor inicial y devuelve el cierre de caja
         return valorFinal;
     }

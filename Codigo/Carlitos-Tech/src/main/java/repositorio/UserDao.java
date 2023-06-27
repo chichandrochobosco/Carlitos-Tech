@@ -68,7 +68,7 @@ public class UserDao implements Dao<Usuario> {
         PreparedStatement ps = con.prepareStatement("Select * from usuario where nombre =?");
         ps.setString(1, nombre);
         ResultSet rs = ps.executeQuery();
-
+        
         while (rs.next()) {
             nom = rs.getString(2);
             apellido = rs.getString(3);

@@ -15,13 +15,14 @@ public class Inventario {
     
     public void agregarProducto(){
         Scanner in = new Scanner(System.in);
-        String id, nombre, marca;
-        int  seguir, cantidad;
+        String nombre, marca;
+        int  id, seguir, cantidad;
         float precio;
         
         do{
            System.out.println("Ingrese el id: ");
-           id = in.nextLine(); 
+           id = in.nextInt();
+           in.nextLine();
            System.out.println("Ingrese el nombre: ");
            nombre = in.nextLine(); 
            System.out.println("Ingrese el precio: ");
@@ -44,12 +45,13 @@ public class Inventario {
     }
     public void eliminarProducto(){
         Scanner in = new Scanner(System.in);
-        String id;
+        int id;
         for(Producto producto : listaProducto){
             producto.mostrarDatos();
         }
         System.out.println("Ingrese el ID  del producto a eliminar: ");
-        id = in.nextLine();
+        id = in.nextInt();
+        in.nextLine();
         //listaProducto.remove(Producto.getId(id));
         Producto productoAEliminar = null;
         for (Producto producto : listaProducto) {
@@ -64,13 +66,14 @@ public class Inventario {
     }
     public void modificarStock(){
         Scanner in = new Scanner(System.in);
-        String id;
+        int id;
         int cantidad;
         for(Producto producto : listaProducto){
             producto.mostrarDatos();
         }
         System.out.println("Ingrese el ID  del producto a modificar su stock: ");
-        id = in.nextLine();
+        id = in.nextInt();
+        in.nextLine();
         System.out.println("ingrese cantidad");
         cantidad = in.nextInt();
         in.nextLine();
