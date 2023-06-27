@@ -1,9 +1,5 @@
 package Core;
 
-/**
- *
- * @author lolo
- */
 public  class Usuario {
     String nombre;
     String apellido;

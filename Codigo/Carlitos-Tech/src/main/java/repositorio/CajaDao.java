@@ -36,14 +36,18 @@ public class CajaDao implements Dao<Caja>{
     }
 
     @Override
-    public Caja getByInt(int id) {
+    public Caja get(int id) {
+        ResultSet rs = null;
+        Connection con = SqlConnection.getConnection();
+        
         float valorInicial = 0, valorFinal = 0;
         LocalDateTime fechaApertura = null, fechaCierre = null;
         
-        Connection con = SqlConnection.getConnection();
         String query = "SELECT * from caja WHERE id=?";
-        try(PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery()){
+        
+        try(PreparedStatement ps = con.prepareStatement(query)){
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
             valorInicial = rs.getFloat("valor_inicial");
             valorFinal = rs.getFloat("valor_final");
             Timestamp fechaAperturaSQL = rs.getTimestamp("fecha_apertura");
@@ -53,7 +57,14 @@ public class CajaDao implements Dao<Caja>{
             fechaCierre = fechaCierreSQL.toLocalDateTime();
         }catch(SQLException e){
             System.out.println(e);
+        }finally{
+            try{
+                if(rs!=null){
+                    rs.close();
+                }    
+            }catch(SQLException e){System.out.println(e);}
         }
+        
         if(fechaApertura==null || fechaCierre==null){
             return null;
         }
@@ -61,7 +72,7 @@ public class CajaDao implements Dao<Caja>{
     }
 
     @Override
-    public Caja getByStr(String id) throws SQLException {
+    public Caja get(String id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

@@ -12,9 +12,9 @@ public interface Dao <T> {
      
     public void delete(int id) throws SQLException;
     
-    public T getByInt(int id) throws SQLException;
+    public T get(int id) throws SQLException;
     
-    public T getByStr(String id) throws SQLException;
+    public T get(String id) throws SQLException;
     
     public List<T> getList() throws SQLException;
     

@@ -1,7 +1,6 @@
 package Core;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Venta {
@@ -15,10 +14,10 @@ public class Venta {
         fechaHora = LocalDateTime.now();
     }
 
-    public Venta() { //temporal para que no de errores en el dao venta
-        precio = 100f;
-        fechaHora = LocalDateTime.now();
-        productos = new ArrayList<Producto>();
+    public Venta(float precio, LocalDateTime fechaHora, List<Producto>productos) { //temporal para que no de errores en el dao venta
+        this.precio = precio;
+        this.fechaHora = fechaHora;
+        this.productos = productos;
     }
     
     

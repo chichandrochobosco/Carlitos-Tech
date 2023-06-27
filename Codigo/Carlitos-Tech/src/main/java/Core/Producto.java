@@ -1,10 +1,5 @@
-
 package Core;
 
-/**
- *
- * @author Licha
- */
 public class Producto {
     private int id;
     private String nombre;

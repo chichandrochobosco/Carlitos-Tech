@@ -61,7 +61,7 @@ public class UserDao implements Dao<Usuario> {
     }
     
     @Override
-    public Usuario getByStr(String nombre) throws SQLException {
+    public Usuario get(String nombre) throws SQLException {
         String nom = "", apellido = "", contraseña = "";
         int rol = -1;
         Connection con = SqlConnection.getConnection();
@@ -96,7 +96,7 @@ public class UserDao implements Dao<Usuario> {
     }
 
     @Override
-    public Usuario getByInt(int id) throws SQLException {
+    public Usuario get(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

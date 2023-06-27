@@ -15,7 +15,7 @@ public class LoginService {
     public Usuario validarUsuario(String nombre,String contraseña){
         Usuario user = null; 
         try {
-            user =  dao.getByStr(nombre);
+            user =  dao.get(nombre);
         } catch (SQLException ex) {
             Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
         }
