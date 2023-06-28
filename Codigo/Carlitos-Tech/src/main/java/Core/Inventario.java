@@ -2,15 +2,16 @@
 package Core;
 import java.util.ArrayList;
 import java.util.Scanner;
-/**
- *
- * @author Licha
- */
+
 public class Inventario {
     private ArrayList<Producto> listaProducto = new ArrayList<>();
 
     public Inventario() {
         listaProducto = new ArrayList<>();
+    }
+    
+    public Inventario(ArrayList<Producto>productos) {
+        listaProducto = productos;
     }
     
     public void agregarProducto(){
@@ -90,6 +91,10 @@ public class Inventario {
     }
     public int consultarStock(int id){
         return 0;
+    }
+
+    public ArrayList<Producto> getListaProducto() {
+        return listaProducto;
     }
     
 }
