@@ -1,7 +1,12 @@
 
 package Core;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import repositorio.Dao;
+import repositorio.ProductoDao;
 
 public class Inventario {
     private ArrayList<Producto> listaProducto = new ArrayList<>();
@@ -14,35 +19,14 @@ public class Inventario {
         listaProducto = productos;
     }
     
-    public void agregarProducto(){
-        Scanner in = new Scanner(System.in);
-        String nombre, marca;
-        int  id, seguir, cantidad;
-        float precio;
-        
-        do{
-           System.out.println("Ingrese el id: ");
-           id = in.nextInt();
-           in.nextLine();
-           System.out.println("Ingrese el nombre: ");
-           nombre = in.nextLine(); 
-           System.out.println("Ingrese el precio: ");
-           precio = in.nextFloat();
-           in.nextLine();
-           System.out.println("Ingrese la marca: ");
-           marca = in.nextLine();
-           System.out.println("Ingrese la cantidad: ");
-           cantidad = in.nextInt();
-           in.nextLine();
-           
-           Producto producto = new Producto(id, nombre, precio, marca, cantidad);
-           listaProducto.add(producto);
-            
-           System.out.println("Desea seguir ingresando prodcutos: 1-Si otro num-No ");
-           seguir = in.nextInt();
-           in.nextLine();
-        }while(seguir==1);
-            
+    public void agregarProducto(Producto producto){
+        try {
+            Dao<Producto> dao;
+            dao = new ProductoDao();
+            dao.add(producto);
+        } catch (SQLException ex) {
+            Logger.getLogger(Inventario.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void eliminarProducto(){
         Scanner in = new Scanner(System.in);

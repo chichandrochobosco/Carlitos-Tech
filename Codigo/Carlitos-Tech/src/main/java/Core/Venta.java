@@ -4,22 +4,29 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Venta {
-    private final LocalDateTime fechaHora;
-    private final float precio;
-    private final List<Producto> productos;
-
-    
+    private LocalDateTime fechaHora;
+    private float precio;
+    private List<Producto> productos;
     
     public Venta(List<Producto>productos) {
         this.productos = productos;
         fechaHora = LocalDateTime.now();
-        precio = calculoPrecio(); // implementar
+        calculoPrecio();
     }
 
     public Venta(float precio, LocalDateTime fechaHora, List<Producto>productos) {
         this.precio = precio;
         this.fechaHora = fechaHora;
         this.productos = productos;
+    }
+    
+    public void calculoPrecio(){
+        float precioTotal=0;
+        for(Producto p: productos){
+            precioTotal+=p.getPrecio();
+        }
+        
+        precio = precioTotal;
     }
 
     public LocalDateTime getFechaHora() {
