@@ -5,16 +5,30 @@
  */
 package vistas;
 
+import Core.Rol;
+import Core.Usuario;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import repositorio.Dao;
+import repositorio.UsuarioDao;
+
 /**
  *
  * @author losmelli
  */
 public class Registro extends javax.swing.JFrame {
 
+    Dao<Usuario> dao;
+
     /**
      * Creates new form Registro
+     *
+     * @param dao
      */
-    public Registro() {
+    public Registro(Dao<Usuario> dao) {
+        this.dao = dao;
         initComponents();
     }
 
@@ -40,8 +54,7 @@ public class Registro extends javax.swing.JFrame {
 
         jMenuItem1.setText("jMenuItem1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(617, 368));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         RegistroButton.setText("Registrar");
@@ -65,7 +78,7 @@ public class Registro extends javax.swing.JFrame {
 
         jLabel4.setText("Apellido");
 
-        RolComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuario", "Admin" }));
+        RolComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(Rol.values()));
         RolComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RolComboBoxActionPerformed(evt);
@@ -137,9 +150,35 @@ public class Registro extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void RegistroButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistroButtonActionPerformed
-        // TODO add your handling code here:
+        String nombre = NombreField.getText();
+        String apellido = ApellidoField.getText();
+        String contraseña = new String(ContraseñaField.getPassword());
+        if (nombre.equalsIgnoreCase("") || apellido.equalsIgnoreCase("") || contraseña.equals("")) {
+            JOptionPane.showMessageDialog(null, "Ingrese los Datos de manera Correcta");
+        }
+        else{
+            Rol rol = (Rol) RolComboBox.getSelectedItem();
+            Usuario usuario = new Usuario(nombre, apellido, contraseña, rol);
+            try {
+                dao.add(usuario);
+                limpiarCampos();
+                JOptionPane.showMessageDialog(null, "Usuario Ingresado Correctamente");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Ocurrio Un error en la carga");
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }//GEN-LAST:event_RegistroButtonActionPerformed
+
+    private void limpiarCampos() {
+        NombreField.setText("");
+        ApellidoField.setText("");
+        ContraseñaField.setText("");
+
+    }
 
     private void RolComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RolComboBoxActionPerformed
         // TODO add your handling code here:
@@ -148,44 +187,13 @@ public class Registro extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Registro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Registro().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ApellidoField;
     private javax.swing.JPasswordField ContraseñaField;
     private javax.swing.JTextField NombreField;
     private javax.swing.JButton RegistroButton;
-    private javax.swing.JComboBox<String> RolComboBox;
+    private javax.swing.JComboBox<Rol> RolComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

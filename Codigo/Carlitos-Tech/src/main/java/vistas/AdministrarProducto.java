@@ -5,17 +5,27 @@
  */
 package vistas;
 
+import Core.Producto;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import repositorio.Dao;
+
 /**
  *
  * @author losmelli
  */
 public class AdministrarProducto extends javax.swing.JFrame {
 
+    Dao<Producto> dao;
+
     /**
      * Creates new form InsertarProducto
      */
-    public AdministrarProducto() {
+    public AdministrarProducto(Dao<Producto> dao) {
         initComponents();
+        this.dao = dao;
     }
 
     /**
@@ -60,7 +70,7 @@ public class AdministrarProducto extends javax.swing.JFrame {
 
         jLabel8.setText("Precio");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         InsertarButton.setText("Insertar");
@@ -107,6 +117,11 @@ public class AdministrarProducto extends javax.swing.JFrame {
         });
 
         BuscarButton.setText("Buscar Producto");
+        BuscarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarButtonActionPerformed(evt);
+            }
+        });
 
         PrecioField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
@@ -201,52 +216,79 @@ public class AdministrarProducto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void InsertarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertarButtonActionPerformed
-        // TODO add your handling code here:
+        Producto producto = obtenerProductoUI();
+        try {
+            dao.add(producto);
+            JOptionPane.showMessageDialog(null, "Producto Insertado Correctamente");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+            Logger.getLogger(AdministrarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_InsertarButtonActionPerformed
 
     private void EliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarProductoActionPerformed
-        // TODO add your handling code here:
+        Producto producto = obtenerProductoUI();
+        try {
+            dao.delete(producto.getId());
+            limpiarCampos();
+            JOptionPane.showMessageDialog(null, "Producto Eliminado Correctamente");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+            Logger.getLogger(AdministrarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_EliminarProductoActionPerformed
 
     private void ModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarProductoActionPerformed
-        // TODO add your handling code here:
+        Producto producto = obtenerProductoUI();
+        try {
+            dao.update(producto);
+            JOptionPane.showMessageDialog(null, "Producto Actualizado Correctamente");
+            limpiarCampos();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+            Logger.getLogger(AdministrarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ModificarProductoActionPerformed
+
+    private void BuscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarButtonActionPerformed
+        try {
+            Producto producto = dao.get(CodigoField.getText());
+            if (producto == null) {
+                JOptionPane.showMessageDialog(null, "Producto no Encontrado");
+                limpiarCampos();
+            } else {
+                NombreField.setText(producto.getNombre());
+                MarcaField.setText(producto.getMarca());
+                PrecioField.setText(String.valueOf(producto.getPrecio()));
+                CantidadField.setText(String.valueOf(producto.getCantidad()));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Ocurrio un error");
+            Logger.getLogger(AdministrarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BuscarButtonActionPerformed
+
+    private void limpiarCampos() {
+        CodigoField.setText("");
+        NombreField.setText("");
+        MarcaField.setText("");
+        PrecioField.setText("");
+        CantidadField.setText("");
+    }
+
+    private Producto obtenerProductoUI() {
+        int codigoBarra = Integer.parseInt(CodigoField.getText());
+        String nombre = NombreField.getText();
+        String marca = MarcaField.getText();
+        float precio = Float.parseFloat(PrecioField.getText());
+        int cantidad = Integer.parseInt(CantidadField.getText());
+        return new Producto(codigoBarra, nombre, precio, marca, cantidad);
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdministrarProducto.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdministrarProducto().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BuscarButton;

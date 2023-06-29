@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import repositorio.Jdbc.SqlConnection;
 
-public class UserDao implements Dao<Usuario> {
+public class UsuarioDao implements Dao<Usuario> {
 
     @Override
     public void add(Usuario usuario) {
@@ -27,7 +27,7 @@ public class UserDao implements Dao<Usuario> {
             ps.execute();
 
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
         } finally{
             try{
                 if(ps != null){
@@ -50,7 +50,7 @@ public class UserDao implements Dao<Usuario> {
             ps.setInt(1, idEliminar);
             ps.execute();
         } catch (SQLException ex) {
-            Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try{
                 if(ps != null){

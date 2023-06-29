@@ -5,16 +5,19 @@
  */
 package vistas;
 
+import javax.swing.JFrame;
+import repositorio.ProductoDao;
+
 /**
  *
  * @author losmelli
  */
-public class VistaUsuario extends javax.swing.JFrame {
+public class VistaCajero extends javax.swing.JFrame {
 
     /**
      * Creates new form VistaUsuario
      */
-    public VistaUsuario() {
+    public VistaCajero() {
         initComponents();
     }
 
@@ -35,9 +38,19 @@ public class VistaUsuario extends javax.swing.JFrame {
 
         AdministrarStockButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         AdministrarStockButton.setText("Administrar Stock");
+        AdministrarStockButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AdministrarStockButtonActionPerformed(evt);
+            }
+        });
 
         RealizarVentaButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         RealizarVentaButton.setText("Realizar Venta");
+        RealizarVentaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RealizarVentaButtonActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Usuario");
@@ -84,6 +97,16 @@ public class VistaUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void AdministrarStockButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdministrarStockButtonActionPerformed
+        JFrame ventana = new AdministrarProducto(new ProductoDao());
+        ventana.setVisible(true);
+    }//GEN-LAST:event_AdministrarStockButtonActionPerformed
+
+    private void RealizarVentaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RealizarVentaButtonActionPerformed
+       JFrame ventana = new RegistrarVenta();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_RealizarVentaButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -101,20 +124,21 @@ public class VistaUsuario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VistaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaCajero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VistaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaCajero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VistaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaCajero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VistaUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VistaCajero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VistaUsuario().setVisible(true);
+                new VistaCajero().setVisible(true);
             }
         });
     }

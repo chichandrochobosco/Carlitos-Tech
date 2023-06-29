@@ -5,7 +5,19 @@
  */
 package vistas;
 
+import Core.Kiosco;
+import Core.Producto;
+import Core.Venta;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import repositorio.Dao;
+import repositorio.ProductoDao;
 
 /**
  *
@@ -13,9 +25,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RegistrarVenta extends javax.swing.JFrame {
 
-    /**
-     * Creates new form RegistrarVenta
-     */
+    private List<Producto> productosEnCarrito = new ArrayList<>();
+
     public RegistrarVenta() {
         initComponents();
     }
@@ -34,11 +45,11 @@ public class RegistrarVenta extends javax.swing.JFrame {
         CantProductoField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         AñadirVentaButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        BotonFinalizarVenta = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TablaProductos = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -55,15 +66,20 @@ public class RegistrarVenta extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Finalizar Venta");
+        BotonFinalizarVenta.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        BotonFinalizarVenta.setText("Finalizar Venta");
+        BotonFinalizarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonFinalizarVentaActionPerformed(evt);
+            }
+        });
 
         DefaultTableModel modelo =  new DefaultTableModel();
         String columnas[] = {"Cod Barra","Nombre","Marca","Precio","Cantidad"};
         modelo.setColumnIdentifiers(columnas);
-        jTable1.setModel(modelo
+        TablaProductos.setModel(modelo
         );
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(TablaProductos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -90,7 +106,7 @@ public class RegistrarVenta extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 555, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(260, 260, 260)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BotonFinalizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(55, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -111,7 +127,7 @@ public class RegistrarVenta extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BotonFinalizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
         );
 
@@ -132,8 +148,61 @@ public class RegistrarVenta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AñadirVentaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AñadirVentaButtonActionPerformed
-        // TODO add your handling code here:
+        if (!CodBarraField.getText().equals("")) {
+            Dao<Producto> dao = new ProductoDao();
+            try {
+                Producto producto = dao.get(CodBarraField.getText());
+                if (producto == null) {
+                    JOptionPane.showMessageDialog(null, "Producto no Existente");
+                } else {
+                    if (CantProductoField.getText().equalsIgnoreCase("")) {
+                        producto.setCantidad(1);
+                    } else {
+                        producto.setCantidad(Integer.parseInt(CantProductoField.getText()));
+                    }
+                    añadirProductoATabla(producto);
+
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(RegistrarVenta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
     }//GEN-LAST:event_AñadirVentaButtonActionPerformed
+
+    private void BotonFinalizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonFinalizarVentaActionPerformed
+      Kiosco.realizarVenta(productosEnCarrito);
+    }//GEN-LAST:event_BotonFinalizarVentaActionPerformed
+
+    private void añadirProductoATabla(Producto producto) {
+        DefaultTableModel modelo = (DefaultTableModel) TablaProductos.getModel();
+        boolean existe = false;
+        int cont = 0;
+        for (Producto p : productosEnCarrito) {
+            if (p.getId() == producto.getId()) {
+                int cant = (producto.getCantidad()) + (p.getCantidad());
+                System.out.println(cant);
+                p.setCantidad(cant);
+                existe = true;
+                modelo.setValueAt(p.getCantidad(), cont, 4);
+                break;
+            }
+            cont++;
+        }
+        if (!existe) {
+            productosEnCarrito.add(producto);        
+            Vector<Object> vector = new Vector<>();
+            vector.add(producto.getId());
+            vector.add(producto.getNombre());
+            vector.add(producto.getMarca());
+            vector.add(producto.getPrecio());
+            vector.add(producto.getCantidad());
+            modelo.addRow(vector);
+        }
+        
+
+    }
 
     /**
      * @param args the command line arguments
@@ -172,14 +241,14 @@ public class RegistrarVenta extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AñadirVentaButton;
+    private javax.swing.JButton BotonFinalizarVenta;
     private javax.swing.JTextField CantProductoField;
     private javax.swing.JTextField CodBarraField;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable TablaProductos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

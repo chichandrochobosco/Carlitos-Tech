@@ -5,7 +5,17 @@
  */
 package vistas;
 
+import Core.Producto;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import repositorio.Dao;
+import repositorio.ProductoDao;
 
 /**
  *
@@ -18,6 +28,28 @@ public class VerInventario extends javax.swing.JFrame {
      */
     public VerInventario() {
         initComponents();
+        cargarDatosTabla();
+    }
+
+    private void cargarDatosTabla() {
+        Dao<Producto> dao = new ProductoDao();
+        List<Producto> lista = new ArrayList<>();
+        try {
+            lista = dao.getList();
+        } catch (SQLException ex) {
+            Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        DefaultTableModel modelo = (DefaultTableModel) TablaDatos.getModel();
+        for (Producto p : lista) {
+            Vector<Object> vector = new Vector<>();
+            vector.add(p.getId());
+            vector.add(p.getNombre());
+            vector.add(p.getMarca());
+            vector.add(p.getPrecio());
+            vector.add(p.getCantidad());
+            modelo.addRow(vector);
+        }
+
     }
 
     /**
@@ -32,7 +64,7 @@ public class VerInventario extends javax.swing.JFrame {
         TablaDatos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         DefaultTableModel modelo =  new DefaultTableModel();

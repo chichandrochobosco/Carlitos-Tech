@@ -117,7 +117,7 @@ public class Login extends javax.swing.JFrame {
          Usuario usuario = service.validarUsuario(nombre, contraseña);
          if(usuario != null){
              if(usuario.getRol() == Rol.Admin) {new VistaAdmin().setVisible(true); this.dispose();}
-             else{new VistaUsuario().setVisible(true); this.dispose();}
+             else{new VistaCajero().setVisible(true); this.dispose();}
              
          }
     }//GEN-LAST:event_LoginButtonActionPerformed

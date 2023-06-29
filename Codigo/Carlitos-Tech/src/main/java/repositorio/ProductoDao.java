@@ -18,12 +18,12 @@ public class ProductoDao implements Dao<Producto>{
         ResultSet rs = null;
         
         try{
-            query = "SELECT EXISTS(SELECT from producto where id = ?);";
-            ps = con.prepareStatement(query);
-            ps.setInt(1, p.getId());
-            rs = ps.executeQuery();
-            boolean productoExistente = rs.getBoolean(1);
-            if(!productoExistente){
+          //  query = "SELECT EXISTS(SELECT from producto where id = ?);";
+         //   ps = con.prepareStatement(query);
+      //      ps.setInt(1, p.getId());
+       //     rs = ps.executeQuery();
+       //     boolean productoExistente = rs.getBoolean(1);
+       //     if(!productoExistente){
                 query = "INSERT INTO producto(id, nombre, marca, precio, cant_producto) values(?,?,?,?,?);";
                 ps = con.prepareStatement(query);
                 ps.setInt(1, p.getId());
@@ -32,7 +32,7 @@ public class ProductoDao implements Dao<Producto>{
                 ps.setFloat(4, p.getPrecio());
                 ps.setInt(5, p.getCantidad());
                 ps.executeUpdate();
-            }
+        //    }
         }catch(SQLException e){
             System.out.println(e);
         }finally{
@@ -52,7 +52,7 @@ public class ProductoDao implements Dao<Producto>{
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        query = "DELETE producto WHERE id = ?;";
+        query = "DELETE FROM PRODUCTO WHERE id = ?;";
         try{
             ps = con.prepareStatement(query);
             ps.setInt(1, id);
@@ -87,13 +87,13 @@ public class ProductoDao implements Dao<Producto>{
             ps = con.prepareStatement(query);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            
+            while(rs.next()){
             nombre = rs.getString("nombre");
             marca = rs.getString("marca");
             precio = rs.getFloat("precio");
-            cantidad = rs.getInt("cant_producto");
-            
+            cantidad = rs.getInt("cant_producto");           
             productoBuscado = new Producto(id, nombre, precio, marca, cantidad);
+            }
         }catch(SQLException e){
             System.out.println(e);
         }finally{
@@ -110,7 +110,7 @@ public class ProductoDao implements Dao<Producto>{
 
     @Override
     public Producto get(String id) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return get(Integer.parseInt(id));
     }
 
     @Override
@@ -159,11 +159,14 @@ public class ProductoDao implements Dao<Producto>{
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        query = "UPDATE producto SET cant_producto = ? WHERE id = ?;";
+        query = "UPDATE producto SET nombre = ?, marca = ?, precio = ?, cant_producto = ? WHERE id = ?;";
         try{
             ps = con.prepareStatement(query);
-            ps.setInt(1, p.getCantidad());
-            ps.setInt(2, p.getId());
+            ps.setString(1, p.getNombre());
+            ps.setString(2,p.getMarca());
+            ps.setFloat(3, p.getPrecio());
+            ps.setInt(4, p.getCantidad());
+            ps.setInt(5, p.getId());
             ps.executeUpdate();
         }catch(SQLException e){
             System.out.println(e);

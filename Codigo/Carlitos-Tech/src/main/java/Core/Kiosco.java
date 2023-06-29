@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Kiosco {
     private Inventario inventario;
-    private List<Venta>listaVentas;
+    private static List<Venta>listaVentas;
 
     public Kiosco(Inventario inventario, Caja caja) {
         this.inventario = inventario;
         listaVentas = new ArrayList<>();
     }
     
-    public void realizarVenta(List<Producto>listaProductos){
+    public static void realizarVenta(List<Producto>listaProductos){
         listaVentas.add(new Venta(listaProductos));
     }
     
