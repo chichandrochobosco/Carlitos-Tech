@@ -4,7 +4,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[700, 500]"/>
+      <Dimension value="[404, 498]"/>
     </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
@@ -77,7 +77,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTableModel modelo =  new DefaultTableModel();&#xa;        String columnas[] = {&quot;DATA&quot;,&quot;DATA&quot;,&quot;DATA&quot;,&quot;DATA&quot;,&quot;DATA&quot;};&#xa;        modelo.setColumnIdentifiers(columnas);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="DefaultTableModel modelo =  new DefaultTableModel(){&#xa;@Override&#xa;    public boolean isCellEditable(int row, int column) {&#xa;       //all cells false&#xa;      return false;&#xa;    }&#xa;};&#xa;       String columnas[] = {&quot;Fecha Venta&quot;,&quot;Valor Total&quot;};&#xa;        modelo.setColumnIdentifiers(columnas);"/>
               </AuxValues>
             </Component>
           </SubComponents>

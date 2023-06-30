@@ -6,6 +6,7 @@
 package vistas;
 
 import Core.Producto;
+import Core.Rol;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,14 +19,29 @@ import repositorio.Dao;
  */
 public class AdministrarProducto extends javax.swing.JFrame {
 
-    Dao<Producto> dao;
+    private Dao<Producto> dao;
+    private Rol rol;
 
     /**
      * Creates new form InsertarProducto
      */
-    public AdministrarProducto(Dao<Producto> dao) {
+    public AdministrarProducto(Dao<Producto> dao, Rol rol) {
         initComponents();
         this.dao = dao;
+        this.rol = rol;
+        AdministrarVista();
+
+    }
+
+    private void AdministrarVista() {
+        if (this.rol.equals(Rol.Cajero)) {
+        
+        NombreField.setEditable(false);
+        MarcaField.setEditable(false);
+        PrecioField.setEditable(false);
+        InsertarButton.setEnabled(false);
+        EliminarProductoButton.setEnabled(false);
+        }
     }
 
     /**
@@ -53,7 +69,7 @@ public class AdministrarProducto extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         CodigoField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        EliminarProducto = new javax.swing.JButton();
+        EliminarProductoButton = new javax.swing.JButton();
         ModificarProducto = new javax.swing.JButton();
         BuscarButton = new javax.swing.JButton();
         PrecioField = new javax.swing.JTextField();
@@ -102,10 +118,10 @@ public class AdministrarProducto extends javax.swing.JFrame {
 
         jLabel9.setText("Codigo de Barra");
 
-        EliminarProducto.setText("Eliminar");
-        EliminarProducto.addActionListener(new java.awt.event.ActionListener() {
+        EliminarProductoButton.setText("Eliminar");
+        EliminarProductoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarProductoActionPerformed(evt);
+                EliminarProductoButtonActionPerformed(evt);
             }
         });
 
@@ -138,7 +154,7 @@ public class AdministrarProducto extends javax.swing.JFrame {
                         .addGap(52, 52, 52)
                         .addComponent(ModificarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-                        .addComponent(EliminarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(EliminarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(81, 81, 81))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,7 +213,7 @@ public class AdministrarProducto extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(InsertarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ModificarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(EliminarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(EliminarProductoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -227,7 +243,7 @@ public class AdministrarProducto extends javax.swing.JFrame {
 
     }//GEN-LAST:event_InsertarButtonActionPerformed
 
-    private void EliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarProductoActionPerformed
+    private void EliminarProductoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarProductoButtonActionPerformed
         Producto producto = obtenerProductoUI();
         try {
             dao.delete(producto.getId());
@@ -237,9 +253,12 @@ public class AdministrarProducto extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ocurrio un error");
             Logger.getLogger(AdministrarProducto.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_EliminarProductoActionPerformed
+    }//GEN-LAST:event_EliminarProductoButtonActionPerformed
 
     private void ModificarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarProductoActionPerformed
+        if (rol.equals(Rol.Cajero)) {
+            CodigoField.setEnabled(true);
+        }
         Producto producto = obtenerProductoUI();
         try {
             dao.update(producto);
@@ -253,6 +272,9 @@ public class AdministrarProducto extends javax.swing.JFrame {
 
     private void BuscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarButtonActionPerformed
         try {
+            if (rol.equals(Rol.Cajero)) {
+                CodigoField.setEnabled(false);
+            }
             Producto producto = dao.get(CodigoField.getText());
             if (producto == null) {
                 JOptionPane.showMessageDialog(null, "Producto no Encontrado");
@@ -294,7 +316,7 @@ public class AdministrarProducto extends javax.swing.JFrame {
     private javax.swing.JButton BuscarButton;
     private javax.swing.JTextField CantidadField;
     private javax.swing.JTextField CodigoField;
-    private javax.swing.JButton EliminarProducto;
+    private javax.swing.JButton EliminarProductoButton;
     private javax.swing.JButton InsertarButton;
     private javax.swing.JTextField MarcaField;
     private javax.swing.JButton ModificarProducto;

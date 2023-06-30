@@ -40,14 +40,16 @@ public class VerInventario extends javax.swing.JFrame {
             Logger.getLogger(VerInventario.class.getName()).log(Level.SEVERE, null, ex);
         }
         DefaultTableModel modelo = (DefaultTableModel) TablaDatos.getModel();
-        for (Producto p : lista) {
-            Vector<Object> vector = new Vector<>();
-            vector.add(p.getId());
-            vector.add(p.getNombre());
-            vector.add(p.getMarca());
-            vector.add(p.getPrecio());
-            vector.add(p.getCantidad());
-            modelo.addRow(vector);
+        if(lista != null){
+            for (Producto p : lista) {
+                Vector<Object> vector = new Vector<>();
+                vector.add(p.getId());
+                vector.add(p.getNombre());
+                vector.add(p.getMarca());
+                vector.add(p.getPrecio());
+                vector.add(p.getCantidad());
+                modelo.addRow(vector);
+            }
         }
 
     }
@@ -71,6 +73,7 @@ public class VerInventario extends javax.swing.JFrame {
         String columnas[] = {"Cod Barra","Nombre","Marca","Precio","Cantidad"};
         modelo.setColumnIdentifiers(columnas);
         TablaDatos.setModel(modelo);
+        TablaDatos.setEnabled(false);
         jScrollPane2.setViewportView(TablaDatos);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N

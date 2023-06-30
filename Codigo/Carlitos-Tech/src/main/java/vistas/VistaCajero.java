@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import Core.Rol;
 import javax.swing.JFrame;
 import repositorio.ProductoDao;
 
@@ -98,7 +99,7 @@ public class VistaCajero extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void AdministrarStockButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdministrarStockButtonActionPerformed
-        JFrame ventana = new AdministrarProducto(new ProductoDao());
+        JFrame ventana = new AdministrarProducto(new ProductoDao(),Rol.Cajero);
         ventana.setVisible(true);
     }//GEN-LAST:event_AdministrarStockButtonActionPerformed
 

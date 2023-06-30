@@ -7,6 +7,7 @@ import Core.Venta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import repositorio.Jdbc.SqlConnection;
 
-public class VentaDao implements Dao<Venta>{
+public class VentaDao implements Dao<Venta> {
 
     @Override
     public void add(Venta venta) {
@@ -23,33 +24,34 @@ public class VentaDao implements Dao<Venta>{
         String query;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
-        try{
+        int idVenta = 0;
+
+        try {
             query = "INSERT INTO Venta (fecha_hora, valor) VALUES (?, ?)";
-            ps = con.prepareStatement(query);
+            ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setTimestamp(1, sqlTimestamp);
             ps.setFloat(2, venta.getPrecio());
             ps.executeUpdate();
-            
-            query = "SELECT LAST_INSERT_ID();";
-            ps = con.prepareStatement(query);
-            rs = ps.executeQuery();
-            int idVenta = rs.getInt("id");
-                        
+
+            rs = ps.getGeneratedKeys();
+            while (rs.next()) {
+                idVenta = rs.getInt(1);
+            }
+
             query = "INSERT INTO venta_producto (id_venta, id_producto, cantidad) VALUES (?, ?, ?)";
             ps = con.prepareStatement(query);
-            for(Producto p: venta.getProductos()){
+            for (Producto p : venta.getProductos()) {
                 ps.setInt(1, idVenta);
                 ps.setInt(2, p.getId());
                 ps.setInt(3, p.getCantidad());
                 ps.addBatch();
             }
             ps.executeBatch();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
-        }finally{
+        } finally {
             try {
-                if(rs != null && ps != null){
+                if (rs != null && ps != null) {
                     rs.close();
                     ps.close();
                 }
@@ -63,51 +65,51 @@ public class VentaDao implements Dao<Venta>{
     public void delete(int id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     @Override
     public Venta get(int id) {
         Connection con = SqlConnection.getConnection();
         PreparedStatement ps = null;
-        ResultSet rs = null;        
-        
+        ResultSet rs = null;
+
         float valor = 0;
         LocalDateTime fechaHora = null;
         ArrayList<Producto> productos = new ArrayList<>();
         String query;
-        
+
         query = "SELECT * from venta WHERE id=?";
-        
-        try{
+
+        try {
             ps = con.prepareStatement(query);
             ps.setInt(1, id);
             rs = ps.executeQuery();
             valor = rs.getFloat("valor");
             Timestamp fechaHoraSQL = rs.getTimestamp("fecha_hora");
             fechaHora = fechaHoraSQL.toLocalDateTime();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
-        }finally{
-            try{
-                if(rs != null && ps != null){
+        } finally {
+            try {
+                if (rs != null && ps != null) {
                     rs.close();
                     ps.close();
                 }
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e);
             }
         }
-        
+
         query = """
                 SELECT producto.id as id, producto.nombre as nombre, producto.marca as marca, producto.precio as precio, venta_producto.cantidad as cantidad 
                 from venta_producto
                 INNER JOIN producto ON venta_producto.id_producto = producto.id
                 WHERE venta_producto.id_venta = ?;""";
-        
-        try{
+
+        try {
             ps = con.prepareStatement(query);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int idProducto = rs.getInt("id");
                 String nombre = rs.getString("nombre");
                 String marca = rs.getString("marca");
@@ -115,27 +117,91 @@ public class VentaDao implements Dao<Venta>{
                 int cantidad = rs.getInt("cantidad");
                 productos.add(new Producto(idProducto, nombre, precio, marca, cantidad));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println(e);
-        }finally{
-            try{
-                if(rs != null && ps != null){
+        } finally {
+            try {
+                if (rs != null && ps != null) {
                     rs.close();
                     ps.close();
                 }
-            }catch(SQLException e){
+            } catch (SQLException e) {
                 System.out.println(e);
             }
         }
-        if(productos.isEmpty()){
-           return null; 
+        if (productos.isEmpty()) {
+            return null;
         }
         return new Venta(valor, fechaHora, productos);
     }
 
     @Override
     public List getList() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection con = SqlConnection.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        List<Venta> ventas = new ArrayList<>();
+        float valor = 0;
+        LocalDateTime fechaHora = null;
+        ArrayList<Producto> productos = new ArrayList<>();
+        String query;
+        query = "SELECT * from venta";
+
+        try {
+            ps = con.prepareStatement(query);
+            rs = ps.executeQuery();
+            while(rs.next()){
+            valor = rs.getFloat("valor");
+            Timestamp fechaHoraSQL = rs.getTimestamp("fecha_hora");
+            fechaHora = fechaHoraSQL.toLocalDateTime();
+            ventas.add(new Venta(valor, fechaHora, productos));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null && ps != null) {
+                    rs.close();
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+
+        query = """
+                SELECT producto.id as id, producto.nombre as nombre, producto.marca as marca, producto.precio as precio, venta_producto.cantidad as cantidad 
+                from venta_producto
+                INNER JOIN producto ON venta_producto.id_producto = producto.id;""";
+
+        try {
+            ps = con.prepareStatement(query);         
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int idProducto = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                String marca = rs.getString("marca");
+                float precio = rs.getFloat("precio");
+                int cantidad = rs.getInt("cantidad");
+                productos.add(new Producto(idProducto, nombre, precio, marca, cantidad));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            try {
+                if (rs != null && ps != null) {
+                    rs.close();
+                    ps.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+        if (productos.isEmpty()) {
+            return null;
+        }
+        return ventas;
     }
 
     @Override
@@ -147,5 +213,5 @@ public class VentaDao implements Dao<Venta>{
     public Venta get(String id) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

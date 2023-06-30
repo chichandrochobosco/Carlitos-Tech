@@ -5,6 +5,7 @@
  */
 package vistas;
 
+import Core.Rol;
 import javax.swing.JFrame;
 import repositorio.ProductoDao;
 import repositorio.UsuarioDao;
@@ -129,7 +130,7 @@ public class VistaAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_AñadirUsuariosButtonActionPerformed
 
     private void AdministrarInventarioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdministrarInventarioButtonActionPerformed
-        JFrame ventana = new AdministrarProducto(new ProductoDao());
+        JFrame ventana = new AdministrarProducto(new ProductoDao(),Rol.Admin);
         ventana.setVisible(true);
     }//GEN-LAST:event_AdministrarInventarioButtonActionPerformed
 

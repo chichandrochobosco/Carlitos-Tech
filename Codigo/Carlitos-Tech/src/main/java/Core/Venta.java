@@ -8,10 +8,11 @@ public class Venta {
     private float precio;
     private List<Producto> productos;
     
-    public Venta(List<Producto>productos) {
+    public Venta(List<Producto>productos,float precio) {
         this.productos = productos;
         fechaHora = LocalDateTime.now();
-        calculoPrecio();
+        this.precio = precio;
+        
     }
 
     public Venta(float precio, LocalDateTime fechaHora, List<Producto>productos) {
@@ -20,14 +21,7 @@ public class Venta {
         this.productos = productos;
     }
     
-    public void calculoPrecio(){
-        float precioTotal=0;
-        for(Producto p: productos){
-            precioTotal+=p.getPrecio();
-        }
-        
-        precio = precioTotal;
-    }
+   
 
     public LocalDateTime getFechaHora() {
         return fechaHora;

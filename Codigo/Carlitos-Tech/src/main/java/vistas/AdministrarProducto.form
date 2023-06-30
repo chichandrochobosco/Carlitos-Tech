@@ -80,7 +80,7 @@
                           <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                           <Component id="ModificarProducto" min="-2" pref="121" max="-2" attributes="0"/>
                           <EmptySpace pref="57" max="32767" attributes="0"/>
-                          <Component id="EliminarProducto" min="-2" pref="121" max="-2" attributes="0"/>
+                          <Component id="EliminarProductoButton" min="-2" pref="121" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -157,7 +157,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="InsertarButton" alignment="3" min="-2" pref="71" max="-2" attributes="0"/>
                       <Component id="ModificarProducto" alignment="3" min="-2" pref="71" max="-2" attributes="0"/>
-                      <Component id="EliminarProducto" alignment="3" min="-2" pref="71" max="-2" attributes="0"/>
+                      <Component id="EliminarProductoButton" alignment="3" min="-2" pref="71" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -227,12 +227,12 @@
             <Property name="text" type="java.lang.String" value="Codigo de Barra"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="EliminarProducto">
+        <Component class="javax.swing.JButton" name="EliminarProductoButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EliminarProductoActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EliminarProductoButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="ModificarProducto">
