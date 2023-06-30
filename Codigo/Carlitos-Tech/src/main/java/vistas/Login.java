@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vistas;
 
 import Core.LoginService;
 import Core.Rol;
 import Core.Usuario;
 
-/**
- *
- * @author losmelli
- */
 public class Login extends javax.swing.JFrame {
 
     /**

@@ -17,13 +17,7 @@ public class ProductoDao implements Dao<Producto>{
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        try{
-          //  query = "SELECT EXISTS(SELECT from producto where id = ?);";
-         //   ps = con.prepareStatement(query);
-      //      ps.setInt(1, p.getId());
-       //     rs = ps.executeQuery();
-       //     boolean productoExistente = rs.getBoolean(1);
-       //     if(!productoExistente){
+        try{        
                 query = "INSERT INTO producto(id, nombre, marca, precio, cant_producto) values(?,?,?,?,?);";
                 ps = con.prepareStatement(query);
                 ps.setInt(1, p.getId());

@@ -142,6 +142,8 @@ public class VentaDao implements Dao<Venta> {
         ResultSet rs = null;
 
         List<Venta> ventas = new ArrayList<>();
+        List<Integer> indices = new ArrayList<>();
+        
         float valor = 0;
         LocalDateTime fechaHora = null;
         ArrayList<Producto> productos = new ArrayList<>();
@@ -156,6 +158,7 @@ public class VentaDao implements Dao<Venta> {
             Timestamp fechaHoraSQL = rs.getTimestamp("fecha_hora");
             fechaHora = fechaHoraSQL.toLocalDateTime();
             ventas.add(new Venta(valor, fechaHora, productos));
+            indices.add(rs.getInt(1));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -170,21 +173,27 @@ public class VentaDao implements Dao<Venta> {
             }
         }
 
-        query = """
+         query = """
                 SELECT producto.id as id, producto.nombre as nombre, producto.marca as marca, producto.precio as precio, venta_producto.cantidad as cantidad 
                 from venta_producto
-                INNER JOIN producto ON venta_producto.id_producto = producto.id;""";
+                INNER JOIN producto ON venta_producto.id_producto = producto.id
+                WHERE venta_producto.id_venta = ?;""";
 
         try {
-            ps = con.prepareStatement(query);         
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int idProducto = rs.getInt("id");
-                String nombre = rs.getString("nombre");
-                String marca = rs.getString("marca");
-                float precio = rs.getFloat("precio");
-                int cantidad = rs.getInt("cantidad");
-                productos.add(new Producto(idProducto, nombre, precio, marca, cantidad));
+            for(int i = 0;i<ventas.size();i++ ){
+                productos = new ArrayList<>();
+                ps = con.prepareStatement(query);         
+                ps.setInt(1,indices.get(i) );
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    int idProducto = rs.getInt("id");
+                    String nombre = rs.getString("nombre");
+                    String marca = rs.getString("marca");
+                    float precio = rs.getFloat("precio");
+                    int cantidad = rs.getInt("cantidad");
+                    productos.add(new Producto(idProducto, nombre, precio, marca, cantidad));
+                }
+                ventas.get(i).setProductos(productos);
             }
         } catch (SQLException e) {
             System.out.println(e);

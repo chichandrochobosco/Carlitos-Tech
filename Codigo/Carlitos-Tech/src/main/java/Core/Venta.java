@@ -20,6 +20,10 @@ public class Venta {
         this.fechaHora = fechaHora;
         this.productos = productos;
     }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+    }
     
    
 
