@@ -115,7 +115,8 @@ public class VentaDao implements Dao<Venta> {
                 String marca = rs.getString("marca");
                 float precio = rs.getFloat("precio");
                 int cantidad = rs.getInt("cantidad");
-                productos.add(new Producto(idProducto, nombre, precio, marca, cantidad));
+                int activo = rs.getInt("activo");
+                productos.add(new Producto(idProducto, nombre, precio, marca, cantidad,activo));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -174,7 +175,7 @@ public class VentaDao implements Dao<Venta> {
         }
 
          query = """
-                SELECT producto.id as id, producto.nombre as nombre, producto.marca as marca, producto.precio as precio, venta_producto.cantidad as cantidad 
+                SELECT producto.id as id, producto.nombre as nombre, producto.marca as marca, producto.precio as precio,producto.activo as activo ,venta_producto.cantidad as cantidad 
                 from venta_producto
                 INNER JOIN producto ON venta_producto.id_producto = producto.id
                 WHERE venta_producto.id_venta = ?;""";
@@ -191,7 +192,9 @@ public class VentaDao implements Dao<Venta> {
                     String marca = rs.getString("marca");
                     float precio = rs.getFloat("precio");
                     int cantidad = rs.getInt("cantidad");
-                    productos.add(new Producto(idProducto, nombre, precio, marca, cantidad));
+                    
+                    int activo = rs.getInt("activo");
+                    productos.add(new Producto(idProducto, nombre, precio, marca, cantidad,activo));
                 }
                 ventas.get(i).setProductos(productos);
             }

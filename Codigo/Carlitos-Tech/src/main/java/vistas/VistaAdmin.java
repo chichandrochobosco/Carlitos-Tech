@@ -21,7 +21,7 @@ public class VistaAdmin extends javax.swing.JFrame {
      */
     public VistaAdmin() {
         initComponents();
-        
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -37,6 +37,7 @@ public class VistaAdmin extends javax.swing.JFrame {
         AñadirUsuariosButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         VerInventarioButton = new javax.swing.JButton();
+        CerrarSesionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -76,6 +77,14 @@ public class VistaAdmin extends javax.swing.JFrame {
             }
         });
 
+        CerrarSesionButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        CerrarSesionButton.setText("Cerrar Sesion");
+        CerrarSesionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarSesionButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -83,9 +92,11 @@ public class VistaAdmin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(475, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CerrarSesionButton)
+                .addGap(44, 44, 44))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(188, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(VerInventarioButton, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -98,7 +109,9 @@ public class VistaAdmin extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(CerrarSesionButton))
                 .addGap(76, 76, 76)
                 .addComponent(AñadirUsuariosButton)
                 .addGap(18, 18, 18)
@@ -107,7 +120,7 @@ public class VistaAdmin extends javax.swing.JFrame {
                 .addComponent(VerInventarioButton)
                 .addGap(18, 18, 18)
                 .addComponent(VerEstadisticasButton)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,6 +156,12 @@ public class VistaAdmin extends javax.swing.JFrame {
         JFrame ventana = new VerInventario();
         ventana.setVisible(true);
     }//GEN-LAST:event_VerInventarioButtonActionPerformed
+
+    private void CerrarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionButtonActionPerformed
+        JFrame ventana = new Login();
+        ventana.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CerrarSesionButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,6 +201,7 @@ public class VistaAdmin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AdministrarInventarioButton;
     private javax.swing.JButton AñadirUsuariosButton;
+    private javax.swing.JButton CerrarSesionButton;
     private javax.swing.JButton VerEstadisticasButton;
     private javax.swing.JButton VerInventarioButton;
     private javax.swing.JLabel jLabel1;

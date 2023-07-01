@@ -4,15 +4,17 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import repositorio.Dao;
+import repositorio.UsuarioDao;
 
 public class LoginService {
-    private Dao<Usuario> dao;
+   
 
-    public LoginService(Dao dao) {
-        this.dao = dao;
+    public LoginService() {
+      
     }
     
     public Usuario validarUsuario(String nombre,String contraseña){
+        Dao<Usuario> dao = new UsuarioDao();
         Usuario user = null; 
         try {
             user =  dao.get(nombre);

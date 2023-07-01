@@ -5,8 +5,12 @@
  */
 package vistas;
 
+import Core.Caja;
+import Core.Kiosco;
 import Core.Rol;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import org.apache.commons.lang3.math.NumberUtils;
 import repositorio.ProductoDao;
 
 /**
@@ -20,6 +24,7 @@ public class VistaCajero extends javax.swing.JFrame {
      */
     public VistaCajero() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -33,6 +38,9 @@ public class VistaCajero extends javax.swing.JFrame {
         AdministrarStockButton = new javax.swing.JButton();
         RealizarVentaButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        AbrirCajaButton = new javax.swing.JButton();
+        CerrarCajaButton = new javax.swing.JButton();
+        CerrarSesionButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -56,32 +64,65 @@ public class VistaCajero extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Usuario");
 
+        AbrirCajaButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        AbrirCajaButton.setText("Abrir Caja");
+        AbrirCajaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AbrirCajaButtonActionPerformed(evt);
+            }
+        });
+
+        CerrarCajaButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        CerrarCajaButton.setText("Cerrar Caja");
+        CerrarCajaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarCajaButtonActionPerformed(evt);
+            }
+        });
+
+        CerrarSesionButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        CerrarSesionButton.setText("Cerrar Sesion");
+        CerrarSesionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarSesionButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(213, 213, 213)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(RealizarVentaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(AdministrarStockButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(201, Short.MAX_VALUE))
+                .addGap(213, 213, 213)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(RealizarVentaButton, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
+                    .addComponent(AbrirCajaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(AdministrarStockButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CerrarCajaButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(229, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(CerrarSesionButton)
+                .addGap(17, 17, 17))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(81, 81, 81)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(CerrarSesionButton))
+                .addGap(80, 80, 80)
                 .addComponent(RealizarVentaButton)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(AdministrarStockButton)
-                .addContainerGap(207, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AbrirCajaButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CerrarCajaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(113, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -104,9 +145,41 @@ public class VistaCajero extends javax.swing.JFrame {
     }//GEN-LAST:event_AdministrarStockButtonActionPerformed
 
     private void RealizarVentaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RealizarVentaButtonActionPerformed
+       if(Caja.getInstance().estaCerrada()){
+           JOptionPane.showMessageDialog(null,"Tiene que Abrir la Caja para continuar");
+           return;
+       }
        JFrame ventana = new RegistrarVenta();
-        ventana.setVisible(true);
+       ventana.setVisible(true);
     }//GEN-LAST:event_RealizarVentaButtonActionPerformed
+
+    private void AbrirCajaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirCajaButtonActionPerformed
+        if(!Caja.getInstance().estaCerrada()){
+           JOptionPane.showMessageDialog(null,"La Caja ya esta Abierta");
+           return;
+       }        
+       String valor = JOptionPane.showInputDialog(null,"Ingrese El Valor de Apertura de la Caja");
+       if(!NumberUtils.isParsable(valor)){
+           JOptionPane.showMessageDialog(null, "Ingrese un valor Valido");
+           return;
+       }
+       Kiosco.abrirCaja(Float.parseFloat(valor));
+    }//GEN-LAST:event_AbrirCajaButtonActionPerformed
+
+    private void CerrarCajaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarCajaButtonActionPerformed
+        if(Caja.getInstance().estaCerrada()){
+           JOptionPane.showMessageDialog(null,"La Caja ya esta Cerrada");
+           return;
+       }
+       
+       Kiosco.cerrarCaja();
+    }//GEN-LAST:event_CerrarCajaButtonActionPerformed
+
+    private void CerrarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionButtonActionPerformed
+        JFrame ventana = new Login();
+        ventana.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_CerrarSesionButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -145,7 +218,10 @@ public class VistaCajero extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AbrirCajaButton;
     private javax.swing.JButton AdministrarStockButton;
+    private javax.swing.JButton CerrarCajaButton;
+    private javax.swing.JButton CerrarSesionButton;
     private javax.swing.JButton RealizarVentaButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

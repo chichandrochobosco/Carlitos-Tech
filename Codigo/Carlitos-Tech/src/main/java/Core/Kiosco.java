@@ -3,9 +3,7 @@ package Core;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import repositorio.Dao;
-import repositorio.ProductoDao;
 import repositorio.VentaDao;
 
 public class Kiosco {
@@ -16,21 +14,20 @@ public class Kiosco {
         this.inventario = inventario;        
     }
 
-    public static void añadirVenta(List<Producto> listaProductos, float valorTotal) throws SQLException {       
-        Venta venta = new Venta(listaProductos,valorTotal);
-        listaVentas.add(venta);
+    public static void añadirVenta(List<Producto> listaProductos, float valorTotal) throws SQLException {          
+        Venta venta = new Venta(listaProductos,valorTotal);                
+        listaVentas.add(venta);       
         Dao<Venta> dao = new VentaDao();
         dao.add(venta);
     }
 
-  
+        
 
-    public float abrirCaja(Caja caja, float valorInicial) {
-        caja.abrirCaja(valorInicial);
-        return valorInicial;
+    public static void abrirCaja( float valorInicial) {
+        Caja.getInstance().abrirCaja(valorInicial);        
     }
 
-    public float cerrarCaja(Caja caja) {
-        return caja.cerrarCaja(0); // El metodo cerrarCaja() deberia ya devolver el valor final y no pedir parametros
+    public static void cerrarCaja() {
+         Caja.getInstance().cerrarCaja(listaVentas); // El metodo cerrarCaja() deberia ya devolver el valor final y no pedir parametros
     }
 }

@@ -22,7 +22,7 @@ public class SqlConnection {
     {
         String url = "jdbc:mysql://localhost:3306/carlitos_tech?serverTimezone=UTC";
         String user = "root";
-        String pass = "";
+        String pass = "12345";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, user, pass);

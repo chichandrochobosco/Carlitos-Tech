@@ -42,6 +42,7 @@ public class VerInventario extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) TablaDatos.getModel();
         if(lista != null){
             for (Producto p : lista) {
+                if(p.getActivo() == 1){
                 Vector<Object> vector = new Vector<>();
                 vector.add(p.getId());
                 vector.add(p.getNombre());
@@ -49,6 +50,7 @@ public class VerInventario extends javax.swing.JFrame {
                 vector.add(p.getPrecio());
                 vector.add(p.getCantidad());
                 modelo.addRow(vector);
+                }
             }
         }
 

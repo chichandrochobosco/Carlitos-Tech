@@ -3,16 +3,16 @@ package vistas;
 import Core.LoginService;
 import Core.Rol;
 import Core.Usuario;
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form Login
      */
-    LoginService service;
-    public Login(LoginService service) {
-        initComponents();
-        this.service = service;
+    public Login() {
+        initComponents();       
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -103,13 +103,16 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
-         String nombre = NombreField.getText();
+        LoginService service = new LoginService();
+        String nombre = NombreField.getText();
          String contraseña = new String(ContraseñaField.getPassword());
          Usuario usuario = service.validarUsuario(nombre, contraseña);
          if(usuario != null){
              if(usuario.getRol() == Rol.Admin) {new VistaAdmin().setVisible(true); this.dispose();}
-             else{new VistaCajero().setVisible(true); this.dispose();}
-             
+             else{new VistaCajero().setVisible(true); this.dispose();}             
+         }
+         if(usuario==null){
+             JOptionPane.showMessageDialog(null, "Usuario o Contraseña Incorrectos");
          }
     }//GEN-LAST:event_LoginButtonActionPerformed
 

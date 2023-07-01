@@ -248,7 +248,7 @@ public class RegistrarVenta extends javax.swing.JFrame implements TableModelList
             Dao<Producto> dao = new ProductoDao();
             try {
                 Producto producto = dao.get(CodBarraField.getText());
-                if (producto == null) {
+                if (producto == null || producto.getActivo() == 0) {
                     JOptionPane.showMessageDialog(null, "Producto no Existente");
                 } else {
                     if (CantProductoField.getText().equalsIgnoreCase("")) {
@@ -327,7 +327,7 @@ public class RegistrarVenta extends javax.swing.JFrame implements TableModelList
         VueltoEtiqueta.setText("$" + vuelto);
 
         Dao<Producto> dao = new ProductoDao();
-        List<Producto> listaProductosDB = obtenerStock(dao, listaProductos);
+        List<Producto> listaProductosDB = obtenerStock(dao, listaProductos);  // Se obtienen todos los productos ingresados en el carrito, de la base de datos
         for (int i = 0; i < listaProductos.size(); i++) {
             int stockNuevo = (listaProductosDB.get(i).getCantidad()) - (listaProductos.get(i).getCantidad());
             if (stockNuevo < 0) {
@@ -336,17 +336,29 @@ public class RegistrarVenta extends javax.swing.JFrame implements TableModelList
             }
         }
         for (int i = 0; i < listaProductos.size(); i++) {
-            int stockNuevo = (listaProductosDB.get(i).getCantidad()) - (listaProductos.get(i).getCantidad());
+            int stockNuevo = (listaProductosDB.get(i).getCantidad()) - (listaProductos.get(i).getCantidad()); // calculamos el nuevo stock
             listaProductosDB.get(i).setCantidad(stockNuevo);
             dao.update(listaProductosDB.get(i)); // actualizamos cada producto ya que le pusimos el nuevo stock          
         }
-        Kiosco.añadirVenta(listaProductos, valorTotal);
-
+        
+        Kiosco.añadirVenta(clonarListaProductos(listaProductos), valorTotal);
+        productosEnCarrito.clear();
         JOptionPane.showMessageDialog(null, "Venta Exitosa");
         limpiarCampos();
 
     }
 
+    
+    private List<Producto> clonarListaProductos(List<Producto> listaAClonar){
+        List<Producto> copiaProductos = new ArrayList<>();
+        for(int i = 0;i<listaAClonar.size();i++){
+            copiaProductos.add(new Producto(listaAClonar.get(i).getId(), listaAClonar.get(i).getNombre(), listaAClonar.get(i).getPrecio(), listaAClonar.get(i).getMarca(), listaAClonar.get(i).getCantidad(), listaAClonar.get(i).getActivo()));
+        }
+        return copiaProductos;
+    }
+    
+    
+    
     private static List<Producto> obtenerStock(Dao<Producto> dao, List<Producto> productos) throws SQLException {
         List<Producto> productosDB = new ArrayList<>();
         for (Producto p : productos) {
@@ -360,15 +372,17 @@ public class RegistrarVenta extends javax.swing.JFrame implements TableModelList
         DefaultTableModel modelo = (DefaultTableModel) TablaProductos.getModel();
         boolean existe = false;
         int cont = 0;
-        for (Producto p : productosEnCarrito) {
-            if (p.getId() == producto.getId()) {
-                int cant = (producto.getCantidad()) + (p.getCantidad());
-                p.setCantidad(cant);
-                existe = true;
-                modelo.setValueAt(p.getCantidad(), cont, 4);   // metodo que busca un producto en el carrito y si lo encuentra aumenta su stock
-                break;
+        if(modelo.getRowCount()>0){
+            for (Producto p : productosEnCarrito) {            
+                if (p.getId() == producto.getId()) {
+                    int cant = (producto.getCantidad()) + (p.getCantidad());
+                    p.setCantidad(cant);
+                    existe = true;
+                    modelo.setValueAt(p.getCantidad(), cont, 4);   // metodo que busca un producto en el carrito y si lo encuentra aumenta su stock
+                    break;
+                }
+                cont++;
             }
-            cont++;
         }
         if (!existe) {
             productosEnCarrito.add(producto);
@@ -401,7 +415,7 @@ public class RegistrarVenta extends javax.swing.JFrame implements TableModelList
             if (NumberUtils.isParsable(string)) {
                 float cant = Float.parseFloat(string);
                 int cantInt = Math.round(cant);
-                if (cantInt <= 0) {
+                if (cantInt <= 0 || ((cant - cantInt) != 0)) {
                     setValorOriginal(codBarra, fila);
                     JOptionPane.showMessageDialog(null, "ingrese un valor valido, solo se admiten valores enteros mayores a 0");
                     return;

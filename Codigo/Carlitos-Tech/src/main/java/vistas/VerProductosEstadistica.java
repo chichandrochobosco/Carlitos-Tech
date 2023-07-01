@@ -7,15 +7,10 @@ package vistas;
 
 import Core.Producto;
 import Core.Venta;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import repositorio.Dao;
-import repositorio.ProductoDao;
 
 /**
  *
@@ -36,7 +31,9 @@ public class VerProductosEstadistica extends javax.swing.JFrame {
         lista = venta.getProductos();
         DefaultTableModel modelo = (DefaultTableModel) TablaDatos.getModel();
         for (Producto p : lista) {
-            Vector<Object> vector = new Vector<>();
+            Vector<Object> vector = new Vector<>();              
+            if(p.getActivo()==0) vector.add("NO Existente");
+            else vector.add("Existente");
             vector.add(p.getId());
             vector.add(p.getNombre());
             vector.add(p.getMarca());
@@ -64,7 +61,7 @@ public class VerProductosEstadistica extends javax.swing.JFrame {
         jLabel1.setText("Productos de la Venta");
 
         DefaultTableModel modelo =  new DefaultTableModel();
-        String columnas[] = {"Cod Barra","Nombre","Marca","Precio","Cantidad"};
+        String columnas[] = {"Estado","Cod Barra","Nombre","Marca","Precio","Cantidad"};
         modelo.setColumnIdentifiers(columnas);
         TablaDatos.setModel(modelo);
         TablaDatos.setEnabled(false);
