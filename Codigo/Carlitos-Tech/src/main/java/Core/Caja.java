@@ -57,7 +57,7 @@ public class Caja {
     }
 
     public void cerrarCaja(List<Venta> ventas) {
-        System.out.println(ventas.get(0).getProductos());
+     
         this.valorFinal = calcularTotalVentas(ventas);
         this.cerrada = true;
         this.fechaCierre = LocalDateTime.now();
@@ -71,7 +71,7 @@ public class Caja {
     }
     
     private float calcularTotalVentas(List<Venta> ventas){
-        System.out.println(ventas.get(0).getProductos());
+      
         float total = 0;
         
         for(Venta v: ventas){
