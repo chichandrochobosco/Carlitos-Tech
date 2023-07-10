@@ -44,7 +44,7 @@ public class VistaVerCaja extends javax.swing.JFrame {
         TablaDatos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         DefaultTableModel modelo =  new DefaultTableModel(){
             @Override
@@ -123,7 +123,7 @@ public class VistaVerCaja extends javax.swing.JFrame {
                 vector.add(p.getFechaApertura());
                 vector.add(p.getFechaCierre());
                 vector.add(p.getValorInicial());
-                vector.add(p.getFechaCierre());
+                vector.add(p.getValorFinal());
                 modelo.addRow(vector);
             }
         }

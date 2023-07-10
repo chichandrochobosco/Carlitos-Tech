@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import repositorio.Jdbc.SqlConnection;
 
@@ -48,13 +49,14 @@ public class CajaDao implements Dao<Caja>{
         try(PreparedStatement ps = con.prepareStatement(query)){
             ps.setInt(1, id);
             rs = ps.executeQuery();
+          while(rs.next()){
             valorInicial = rs.getFloat("valor_inicial");
             valorFinal = rs.getFloat("valor_final");
             Timestamp fechaAperturaSQL = rs.getTimestamp("fecha_apertura");
-            Timestamp fechaCierreSQL = rs.getTimestamp("fecha_cierre");
-            
+            Timestamp fechaCierreSQL = rs.getTimestamp("fecha_cierre");          
             fechaApertura = fechaAperturaSQL.toLocalDateTime();
             fechaCierre = fechaCierreSQL.toLocalDateTime();
+          }
         }catch(SQLException e){
             System.out.println(e);
         }finally{
@@ -78,7 +80,41 @@ public class CajaDao implements Dao<Caja>{
 
     @Override
     public List getList() throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<Caja> listaCaja = new ArrayList<>();
+        
+        ResultSet rs = null;
+        Connection con = SqlConnection.getConnection();
+        
+        float valorInicial = 0, valorFinal = 0;
+        LocalDateTime fechaApertura = null, fechaCierre = null;
+        
+        String query = "SELECT * from caja";
+        
+        try(PreparedStatement ps = con.prepareStatement(query)){
+            rs = ps.executeQuery();
+            while(rs.next()){
+                valorInicial = rs.getFloat("valor_inicial");
+                valorFinal = rs.getFloat("valor_final");
+                Timestamp fechaAperturaSQL = rs.getTimestamp("fecha_apertura");
+                Timestamp fechaCierreSQL = rs.getTimestamp("fecha_cierre");           
+                fechaApertura = fechaAperturaSQL.toLocalDateTime();
+                fechaCierre = fechaCierreSQL.toLocalDateTime();            
+                listaCaja.add(new Caja(valorInicial, valorFinal, fechaApertura, fechaCierre));
+            }
+        }catch(SQLException e){
+            System.out.println(e);
+        }finally{
+            try{
+                if(rs!=null){
+                    rs.close();
+                }    
+            }catch(SQLException e){System.out.println(e);}
+        }
+        
+        if(fechaApertura==null || fechaCierre==null){
+            return null;
+        }
+        return listaCaja;
     }
 
     @Override

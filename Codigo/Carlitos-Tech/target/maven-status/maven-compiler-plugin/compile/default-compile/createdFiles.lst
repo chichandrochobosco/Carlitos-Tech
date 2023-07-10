@@ -1,3 +1,4 @@
+vistas\VistaVerCaja.class
 vistas\AdministrarProducto$3.class
 vistas\RegistrarVenta$2.class
 repositorio\CajaDao.class
@@ -15,6 +16,7 @@ vistas\RegistrarVenta.class
 repositorio\PasswordEncryptorDecryptor.class
 Core\Venta.class
 vistas\VistaCajero$6.class
+vistas\VistaVerCaja$1.class
 vistas\RegistrarVenta$1.class
 repositorio\VentaDao.class
 Core\Kiosco.class
@@ -51,3 +53,4 @@ Core\Rol.class
 vistas\VerEstadisticas$3.class
 vistas\RegistrarVenta$3.class
 repositorio\ProductoDao.class
+vistas\VistaAdmin$7.class

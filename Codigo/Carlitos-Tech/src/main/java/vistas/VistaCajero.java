@@ -139,6 +139,9 @@ public class VistaCajero extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+   
+    
+    
     private void AdministrarStockButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdministrarStockButtonActionPerformed
         JFrame ventana = new AdministrarProducto(new ProductoDao(),Rol.Cajero);
         ventana.setVisible(true);
@@ -173,6 +176,7 @@ public class VistaCajero extends javax.swing.JFrame {
        }
        
        Kiosco.cerrarCaja();
+       JOptionPane.showMessageDialog(null, "caja cerrada correctamente");
     }//GEN-LAST:event_CerrarCajaButtonActionPerformed
 
     private void CerrarSesionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarSesionButtonActionPerformed

@@ -58,7 +58,7 @@ public class Caja {
 
     public void cerrarCaja(List<Venta> ventas) {
      
-        this.valorFinal = calcularTotalVentas(ventas);
+        this.valorFinal = this.valorInicial +  calcularTotalVentas(ventas);
         this.cerrada = true;
         this.fechaCierre = LocalDateTime.now();
         Dao<Caja> dao = new CajaDao();
